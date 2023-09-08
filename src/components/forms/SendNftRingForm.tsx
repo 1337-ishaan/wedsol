@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -98,11 +98,11 @@ const SendNftRingForm = (): JSX.Element => {
 
   const { register, watch, handleSubmit, setValue } = useForm({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
   });
   const formValues = watch(['spouseName', 'message', 'proposerRing']);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const connection = getConnection();
 
@@ -186,8 +186,7 @@ const SendNftRingForm = (): JSX.Element => {
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
-          pathname: `/proposal/${proposalPubKey.toBase58()}/created`,
+        navigate(`/proposal/${proposalPubKey.toBase58()}/created`, {
           state: {
             proposalTransaction: signature,
             spouseName: d.spouseName,

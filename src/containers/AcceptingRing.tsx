@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
 import { useSnapshot } from 'valtio';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { state } from 'state';
 
@@ -33,11 +33,11 @@ const AcceptingRing = (): JSX.Element => {
   const snap = useSnapshot(state);
 
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!proposalPubKey) {
-      return history.replace('/');
+    if (!proposalPubKey!) {
+      return navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

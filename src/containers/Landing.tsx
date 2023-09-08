@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import { useSnapshot } from 'valtio';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { BsArrowRight } from 'react-icons/bs';
 
 import { state } from 'state';
@@ -41,7 +41,7 @@ const LandingWrapper = styled.main`
 `;
 
 const Landing = (): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const snap = useSnapshot(state);
 
   return (
@@ -51,7 +51,7 @@ const Landing = (): JSX.Element => {
         <SolidButton
           className="solid-button"
           onClick={() => {
-            history.push('/proposal');
+            navigate('/proposal');
           }}
         >
           Proceed

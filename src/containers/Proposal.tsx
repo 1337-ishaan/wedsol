@@ -55,7 +55,7 @@ const Proposal = (): JSX.Element => {
         setDisableProposalFlow(false);
 
         const proposalPubKey = await getPubKeyFromSeed();
-        const accountInfo = await getAccountInfo(proposalPubKey);
+        const accountInfo = await getAccountInfo(proposalPubKey!);
         if (accountInfo === null) {
           setProposalInfoFailure();
           setDisableMarriageFlow(true);

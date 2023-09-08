@@ -141,7 +141,7 @@ interface EngagementCardProps {
   engagementDate: string;
   proposerRing: string;
   spouseRing: string;
-  signedBy: string[];
+  signedBy: readonly string[];
   qrCodeString: string;
 }
 

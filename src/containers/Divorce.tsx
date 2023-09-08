@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import ConnectedAccountPill from 'components/ConnectedAccountPill';
 import SectionTitle from 'components/common/SectionTitle';
@@ -29,11 +29,11 @@ const DivorceWrapper = styled.main`
 
 const Divorce = (): JSX.Element => {
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    if (!proposalPubKey) {
-      history.replace('/');
+    if (!proposalPubKey!) {
+      navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

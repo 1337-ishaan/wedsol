@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaPlus } from 'react-icons/fa';
 import { useSnapshot } from 'valtio';
 import millify from 'millify';
@@ -141,7 +141,7 @@ const Assets = (): JSX.Element => {
 
   const [mainProposalPubKey, setMainProposalPubKey] = React.useState('');
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const snap = useSnapshot(state);
 
@@ -151,7 +151,7 @@ const Assets = (): JSX.Element => {
         setProposalInfoLoading();
         const proposalPubKey = await getPubKeyFromSeed();
         setMainProposalPubKey(proposalPubKey.toString());
-        const accountInfo = await getAccountInfo(proposalPubKey);
+        const accountInfo = await getAccountInfo(proposalPubKey!);
 
         if (accountInfo === null) {
           setBlockChainAssetsArray([]);
@@ -192,7 +192,7 @@ const Assets = (): JSX.Element => {
           <FlexColumnWrapper className="col-1">
             <FlexRowWrapper>
               <h1 className="my-assets">My Assets</h1>
-              <SolidButton className="add-asset" onClick={() => history.push('/add-asset')}>
+              <SolidButton className="add-asset" onClick={() => navigate('/add-asset')}>
                 <FaPlus />
                 Add Asset
               </SolidButton>

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
 import { PublicKey } from '@solana/web3.js';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 
 import {
@@ -47,17 +47,17 @@ const AcceptRingRequest = (): JSX.Element => {
   const snap = useSnapshot(state);
 
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     try {
-      if (!proposalPubKey) {
-        return history.replace('/');
+      if (!proposalPubKey!) {
+        return navigate('/');
       }
 
       (async () => {
         setProposalInfoLoading();
-        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey));
+        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey!));
         const { data } = await fetchIpfsJsonData(accountInfo?.extra?.substr(0, 46));
         if (data) {
           setProposalInfoData({
@@ -84,12 +84,12 @@ const AcceptRingRequest = (): JSX.Element => {
       <ConnectedAccountPill className="connected-account-pill" />
       <Container>
         <AcceptRingRequestCard
-          proposalPubKey={proposalPubKey}
+          proposalPubKey={proposalPubKey!}
           proposerName={snap.proposalInfo.data?.proposerName ?? ''}
           spouseName={snap.proposalInfo.data?.spouseName ?? ''}
           proposerRing={snap.proposalInfo.data?.proposerRing ?? rings[0]}
           message={snap.proposalInfo.data?.message ?? ''}
-          signedBy={snap.proposalInfo.data?.signers ?? []}
+          signedBy={snap.proposalInfo.data?.signers! ?? []}
           qrCodeString={window.location.href}
         />
       </Container>

@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
 import QRCode from 'react-qr-code';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 
 import { state } from 'state';
@@ -173,7 +173,7 @@ interface AcceptRingRequestCardProps {
   spouseName: string;
   proposerRing: string;
   message: string;
-  signedBy: string[];
+  signedBy: readonly string[];
   qrCodeString: string;
 }
 
@@ -187,7 +187,7 @@ const AcceptRingRequestCard = ({
   signedBy,
   qrCodeString,
 }: AcceptRingRequestCardProps): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const snap = useSnapshot(state);
 
   return (
@@ -210,7 +210,7 @@ const AcceptRingRequestCard = ({
             <SolidButton
               className="accept-ring-button"
               onClick={() => {
-                history.push(`/proposal/${proposalPubKey}/accepting`);
+                navigate(`/proposal/${proposalPubKey}/accepting`);
               }}
             >
               Accept Ring

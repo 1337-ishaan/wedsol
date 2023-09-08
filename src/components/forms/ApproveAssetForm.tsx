@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -220,11 +220,11 @@ const ApproveAssetForm = (): JSX.Element => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { proposalPubKey, ipfsCid } = useParams<{ proposalPubKey: string; ipfsCid: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { register, watch, handleSubmit } = useForm({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
   });
 
   const [percentageSplit, percentageIncaseOfDivorce] = watch(['percentageSplit', 'percentageIncaseOfDivorce']);
@@ -237,7 +237,7 @@ const ApproveAssetForm = (): JSX.Element => {
     try {
       (async () => {
         setProposalInfoLoading();
-        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey));
+        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey!));
 
         if (accountInfo === null) {
           setProposalInfoFailure();
@@ -287,13 +287,13 @@ const ApproveAssetForm = (): JSX.Element => {
             isWritable: false,
           },
           {
-            pubkey: new PublicKey(proposalPubKey),
+            pubkey: new PublicKey(proposalPubKey!),
             isSigner: false,
             isWritable: true,
           },
         ],
         programId: programIdPublicKey,
-        data: approveAssetData(ipfsCid),
+        data: approveAssetData(ipfsCid!),
       });
       const transaction = new Transaction().add(instruction);
       transaction.feePayer = provider.publicKey;
@@ -303,7 +303,7 @@ const ApproveAssetForm = (): JSX.Element => {
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
+        navigate({
           pathname: `/`,
         });
       }

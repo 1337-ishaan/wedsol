@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import { PublicKey, TransactionInstruction, Transaction } from '@solana/web3.js';
 import millify from 'millify';
@@ -129,7 +129,7 @@ const DivorceForm = (): JSX.Element => {
 
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const snap = useSnapshot(state);
 
@@ -139,7 +139,7 @@ const DivorceForm = (): JSX.Element => {
     try {
       (async () => {
         setProposalInfoLoading();
-        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey));
+        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey!));
 
         if (accountInfo === null) {
           setProposalInfoFailure();
@@ -190,7 +190,7 @@ const DivorceForm = (): JSX.Element => {
             isWritable: false,
           },
           {
-            pubkey: new PublicKey(proposalPubKey),
+            pubkey: new PublicKey(proposalPubKey!),
             isSigner: false,
             isWritable: true,
           },
@@ -206,7 +206,7 @@ const DivorceForm = (): JSX.Element => {
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
+        navigate({
           pathname: `/`,
         });
       }

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useParams, useHistory, useLocation } from 'react-router-dom';
+import { useParams, useNavigate, useLocation, useNavigation } from 'react-router-dom';
 
 import config from 'config';
 
@@ -53,13 +53,14 @@ const SuccessfullyMintedWrapper = styled.main`
 const SuccessfullyMinted = (): JSX.Element => {
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
-  const location = useLocation<{ proposalTransaction: string; spouseName: string; message: string; ring: number }>();
+  const location = useLocation();
+  // <{ proposalTransaction: string; spouseName: string; message: string; ring: number }>();
 
   React.useEffect(() => {
-    if (!proposalPubKey) {
-      history.replace('/');
+    if (!proposalPubKey!) {
+      navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

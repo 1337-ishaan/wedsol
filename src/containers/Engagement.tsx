@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
 import { PublicKey } from '@solana/web3.js';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useSnapshot } from 'valtio';
 import { IoLink, IoLogoTwitter, IoLogoFacebook } from 'react-icons/io5';
 
@@ -66,19 +66,19 @@ const EngagementWrapper = styled.main`
 
 const Engagement = (): JSX.Element => {
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const snap = useSnapshot(state);
 
   React.useEffect(() => {
     try {
-      if (!proposalPubKey) {
-        return history.replace('/');
+      if (!proposalPubKey!) {
+        return navigate('/');
       }
 
       (async () => {
         setProposalInfoLoading();
-        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey));
+        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey!));
         const { data } = await fetchIpfsJsonData(accountInfo?.extra?.substr(0, 46));
         if (data) {
           setProposalInfoData({

@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import '@rainbow-me/rainbowkit/styles.css';
 
 import { GlobalStyles } from 'components/common/styles/GlobalStyles';
+// rainbowkit
+import { getDefaultWallets, RainbowKitProvider } from '@rainbow-me/rainbowkit';
+import { configureChains, createConfig, WagmiConfig } from 'wagmi';
+import { goerli } from 'wagmi/chains';
+import { publicProvider } from 'wagmi/providers/public';
 
 import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
@@ -25,32 +31,47 @@ const ApproveAsset = React.lazy(() => import('containers/ApproveAsset'));
 const Divorce = React.lazy(() => import('containers/Divorce'));
 
 const App = () => {
+  const { chains, publicClient } = configureChains([goerli], [publicProvider()]);
+  const { connectors } = getDefaultWallets({
+    appName: 'My RainbowKit App',
+    projectId: 'YOUR_PROJECT_ID',
+    chains,
+  });
+  const wagmiConfig = createConfig({
+    autoConnect: true,
+    connectors,
+    publicClient,
+  });
+
   return (
     <React.Fragment>
-      <GlobalStyles />
-      <React.Suspense fallback={null}>
-        <Router>
-          <Phantom />
-          <Navbar />
-          <Switch>
-            <Route exact path="/" component={Landing} />
-            <ProtectedRoute exact path="/proposal" component={Proposal} />
-            <ProtectedRoute exact path="/proposal/new" component={SendNFTRing} />
-            <ProtectedRoute exact path="/proposal/:proposalPubKey/created" component={SuccessfullyMinted} />
-            <Route exact path="/proposal/:proposalPubKey/accept" component={AcceptRingRequest} />
-            <ProtectedRoute exact path="/proposal/:proposalPubKey/accepting" component={AcceptingRing} />
-            <Route exact path="/engagement/:proposalPubKey" component={Engagement} />
-
-            <ProtectedRoute exact path="/marriage/new" component={StartNewMarriage} />
-            <Route exact path="/marriage/:proposalPubKey" component={Marriage} />
-            <ProtectedRoute exact path="/assets" component={Assets} />
-            <ProtectedRoute exact path="/add-asset" component={AddAsset} />
-            <Route exact path="/approve-asset/:proposalPubKey/:ipfsCid" component={ApproveAsset} />
-            <Route exact path="/divorce/:proposalPubKey" component={Divorce} />
-          </Switch>
-          <Footer />
-        </Router>
-      </React.Suspense>
+      <WagmiConfig config={wagmiConfig}>
+        <RainbowKitProvider chains={chains}>
+          <GlobalStyles />
+          <React.Suspense fallback={null}>
+            <BrowserRouter>
+              <Navbar />
+              <Routes>
+                <Route path="/" element={<Landing />} />
+                <Route path="/proposal" element={<Proposal />} /> {/*TODO: Protected */}
+                <Route path="/proposal/new" element={<SendNFTRing />} /> {/*TODO: Protected */}
+                <Route path="/proposal/:proposalPubKey/created" element={<SuccessfullyMinted />} />
+                {/*TODO: Protected */}
+                <Route path="/proposal/:proposalPubKey/accept" element={<AcceptRingRequest />} />
+                <Route path="/proposal/:proposalPubKey/accepting" element={<AcceptingRing />} /> {/*TODO: Protected */}
+                <Route path="/engagement/:proposalPubKey" element={<Engagement />} />
+                <Route path="/marriage/new" element={<StartNewMarriage />} /> {/*TODO: Protected */}
+                <Route path="/marriage/:proposalPubKey" element={<Marriage />} />
+                <Route path="/assets" element={<Assets />} /> {/*TODO: Protected */}
+                <Route path="/add-asset" element={<AddAsset />} /> {/*TODO: Protected */}
+                <Route path="/approve-asset/:proposalPubKey/:ipfsCid" element={<ApproveAsset />} />
+                <Route path="/divorce/:proposalPubKey" element={<Divorce />} />
+              </Routes>
+              <Footer />
+            </BrowserRouter>
+          </React.Suspense>
+        </RainbowKitProvider>
+      </WagmiConfig>
     </React.Fragment>
   );
 };

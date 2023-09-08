@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -140,12 +140,12 @@ const AddAssetForm = (): JSX.Element => {
 
   const { register, watch, handleSubmit, setValue } = useForm({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
   });
 
   const [percentageSplit, percentageIncaseOfDivorce] = watch(['percentageSplit', 'percentageIncaseOfDivorce']);
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const snap = useSnapshot(state);
 
@@ -221,7 +221,7 @@ const AddAssetForm = (): JSX.Element => {
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
+        navigate({
           pathname: `/assets`,
         });
       }

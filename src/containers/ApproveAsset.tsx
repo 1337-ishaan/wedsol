@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import ConnectedAccountPill from 'components/ConnectedAccountPill';
 import SectionTitle from 'components/common/SectionTitle';
@@ -29,11 +29,11 @@ const ApproveAssetWrapper = styled.main`
 
 const ApproveAsset = (): JSX.Element => {
   const { proposalPubKey, ipfsCid } = useParams<{ proposalPubKey: string; ipfsCid: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     if (!proposalPubKey || !ipfsCid) {
-      history.replace('/');
+      navigate('/');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

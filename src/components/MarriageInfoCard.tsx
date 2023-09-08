@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro';
 import clsx from 'clsx';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FaWallet } from 'react-icons/fa';
 import { MdContentCopy } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
@@ -159,7 +159,7 @@ const MarriageInfoCard = ({
   showBlessButton = true,
   showFileDivorceButton = true,
 }: MarriageInfoCardProps): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <MarriageInfoCardWrapper className={clsx(className)}>
@@ -193,7 +193,7 @@ const MarriageInfoCard = ({
         </SolidButton>
       ) : null}
       {showFileDivorceButton ? (
-        <SolidButton className="solid-button red" onClick={() => history.push(`/divorce/${proposalPubKey}`)}>
+        <SolidButton className="solid-button red" onClick={() => navigate(`/divorce/${proposalPubKey}`)}>
           <AiOutlineDelete />
           File for divorce
         </SolidButton>

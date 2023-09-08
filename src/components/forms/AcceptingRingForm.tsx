@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -119,11 +119,11 @@ const AcceptingRingForm = ({
   const [isSubmitting, setIsSubmitting] = React.useState(false);
 
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const { watch, handleSubmit, setValue } = useForm({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
   });
   const formValues = watch(['spouseRing']);
 
@@ -160,7 +160,7 @@ const AcceptingRingForm = ({
             isWritable: false,
           },
           {
-            pubkey: new PublicKey(proposalPubKey),
+            pubkey: new PublicKey(proposalPubKey!),
             isSigner: false,
             isWritable: true,
           },
@@ -177,7 +177,7 @@ const AcceptingRingForm = ({
             isWritable: false,
           },
           {
-            pubkey: new PublicKey(proposalPubKey),
+            pubkey: new PublicKey(proposalPubKey!),
             isSigner: false,
             isWritable: true,
           },
@@ -193,7 +193,7 @@ const AcceptingRingForm = ({
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
+        navigate({
           pathname: `/engagement/${proposalPubKey}`,
         });
       }

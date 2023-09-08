@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -111,11 +111,11 @@ const MarriageForm = (): JSX.Element => {
 
   const { register, watch, handleSubmit, setValue } = useForm({
     defaultValues,
-    resolver: yupResolver(validationSchema),
+    // resolver: yupResolver(validationSchema),
   });
   const formValues = watch();
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const connection = getConnection();
 
@@ -127,7 +127,7 @@ const MarriageForm = (): JSX.Element => {
         if (!snap.proposalInfo?.data) {
           setProposalInfoLoading();
           const proposalPubKey = await getPubKeyFromSeed();
-          const accountInfo = await getAccountInfo(proposalPubKey);
+          const accountInfo = await getAccountInfo(proposalPubKey!);
           const { data } = await fetchIpfsJsonData(accountInfo?.extra?.substr(0, 46));
           if (data) {
             setValue('proposerName', data.proposerName);
@@ -210,7 +210,7 @@ const MarriageForm = (): JSX.Element => {
         let signature = await connection.sendRawTransaction(signed.serialize());
         await connection.confirmTransaction(signature);
 
-        history.push({
+        navigate({
           pathname: `/marriage/${proposalPubKey}`,
         });
       }

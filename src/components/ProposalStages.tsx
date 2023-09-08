@@ -1,5 +1,5 @@
 import styled from 'styled-components/macro';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import FlexRowWrapper from './common/wrappers/FlexRowWrapper';
 import FlexColumnWrapper from './common/wrappers/FlexColumnWrapper';
@@ -74,13 +74,13 @@ const ProposalStages = ({
   disableProposalFlow = false,
   disableMarriageFlow = false,
 }: ProposalStagesProps): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
 
   return (
     <ProposalStagesWrapper>
       <FlexRowWrapper>
         <FlexColumnWrapper
-          onClick={() => (disableProposalFlow ? {} : history.push('/proposal/new'))}
+          onClick={() => (disableProposalFlow ? {} : navigate('/proposal/new'))}
           style={{ cursor: disableProposalFlow ? 'not-allowed' : 'pointer' }}
         >
           <FlexRowWrapper>
@@ -92,7 +92,7 @@ const ProposalStages = ({
           </FlexRowWrapper>
         </FlexColumnWrapper>
         <FlexColumnWrapper
-          onClick={() => (disableMarriageFlow ? {} : history.push('/marriage/new'))}
+          onClick={() => (disableMarriageFlow ? {} : navigate('/marriage/new'))}
           style={{ cursor: disableMarriageFlow ? 'not-allowed' : 'pointer' }}
         >
           <FlexRowWrapper>

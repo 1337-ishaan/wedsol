@@ -1,6 +1,6 @@
 import * as React from 'react';
 import styled from 'styled-components/macro';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { IoLink, IoLogoTwitter, IoLogoFacebook } from 'react-icons/io5';
 import { HiExternalLink } from 'react-icons/hi';
 import { useSnapshot } from 'valtio';
@@ -124,17 +124,17 @@ const Marriage = (): JSX.Element => {
   const snap = useSnapshot(state);
 
   const { proposalPubKey } = useParams<{ proposalPubKey: string }>();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   React.useEffect(() => {
     try {
-      if (!proposalPubKey) {
-        history.replace('/');
+      if (!proposalPubKey!) {
+        navigate('/');
       }
 
       (async () => {
         setProposalInfoLoading();
-        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey));
+        const accountInfo = await getAccountInfo(new PublicKey(proposalPubKey!));
         const { data } = await fetchIpfsJsonData(accountInfo?.extra?.substr(0, 46));
         if (data) {
           setProposalInfoData({
