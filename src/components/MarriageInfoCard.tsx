@@ -5,7 +5,7 @@ import { FaWallet } from 'react-icons/fa';
 import { MdContentCopy } from 'react-icons/md';
 import { AiOutlineDelete } from 'react-icons/ai';
 
-import config from 'config';
+// import config from 'config';
 
 import FlexColumnWrapper from './common/wrappers/FlexColumnWrapper';
 import FlexRowWrapper from './common/wrappers/FlexRowWrapper';
@@ -175,21 +175,21 @@ const MarriageInfoCard = ({
         </FlexRowWrapper>
         <FlexRowWrapper>
           <MdContentCopy />
-          <p>{shortenWalletAddress(config.programId, 10)}</p>
+          {/* <p>{shortenWalletAddress(config.programId, 10)}</p> */}
         </FlexRowWrapper>
       </FlexColumnWrapper>
-      {showViewOnExplorer ? (
+      {/* {showViewOnExplorer ? (
         <ViewOnExplorer
           className="view-on-explorer"
           href={`https://explorer.solana.com/address/${config.programId}?cluster=${config.solanaNetwork}`}
           target="_blank"
           rel="noopener noreferrer"
         />
-      ) : null}
+      ) : null} */}
       {showBlessButton ? (
         <SolidButton className="solid-button" style={{ cursor: 'not-allowed' }}>
           <FaWallet />
-          Send $SOL to Bless
+          Send $ZETA to Bless
         </SolidButton>
       ) : null}
       {showFileDivorceButton ? (

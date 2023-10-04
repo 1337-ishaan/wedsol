@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 
 import FlexRowWrapper from 'components/common/wrappers/FlexRowWrapper';
 
-import poweredBySolana from 'assets/logos/powered-by-solana.png';
+// import poweredBySolana from 'assets/logos/powered-by-solana.png';
 
 const FooterWrapper = styled.footer`
   width: 100%;
@@ -31,7 +31,7 @@ const Footer = (): JSX.Element => {
   return (
     <FooterWrapper>
       <FlexRowWrapper>
-        <img src={poweredBySolana} alt="Powered by Solana" className="powered-by-solana" />
+        {/* <img src={poweredBySolana} alt="Powered by Solana" className="powered-by-solana" /> */}
       </FlexRowWrapper>
     </FooterWrapper>
   );

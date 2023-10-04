@@ -13,7 +13,6 @@ import Navbar from 'components/Navbar';
 import Footer from 'components/Footer';
 import ProtectedRoute from 'components/ProtectedRoute';
 
-import Phantom from 'components/Phantom';
 import Landing from 'containers/Landing';
 
 const Proposal = React.lazy(() => import('containers/Proposal'));
@@ -55,7 +54,7 @@ const App = () => {
                 <Route path="/" element={<Landing />} />
                 <Route path="/proposal" element={<Proposal />} /> {/*TODO: Protected */}
                 <Route path="/proposal/new" element={<SendNFTRing />} /> {/*TODO: Protected */}
-                <Route path="/proposal/:proposalPubKey/created" element={<SuccessfullyMinted />} />
+                <Route path="/proposal/:proposalPubKey/created" element={<SuccessfullyMinted />} />{' '}
                 {/*TODO: Protected */}
                 <Route path="/proposal/:proposalPubKey/accept" element={<AcceptRingRequest />} />
                 <Route path="/proposal/:proposalPubKey/accepting" element={<AcceptingRing />} /> {/*TODO: Protected */}
